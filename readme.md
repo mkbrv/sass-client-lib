@@ -1,3 +1,6 @@
+Status: [![Build Status](https://travis-ci.org/mkbrv/sass-client-lib.svg?branch=master)](https://travis-ci.org/mkbrv/sass-client-lib) 
+
+
 ## TODO
 
 1. Bug: Changes in imported files are not generating a refresh of the client Lib (only the files stated in css.txt)

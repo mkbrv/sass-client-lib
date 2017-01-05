@@ -14,21 +14,41 @@
     <name>
         SASS :: Client :: Lib :: Content
     </name>
+
     <modules>
         <module>demo-package</module>
         <module>package</module>
     </modules>
 
     <properties>
-        <cq.user>admin</cq.user>
-        <cq.password>admin</cq.password>
-        <cq.server>http://localhost:4800</cq.server>
-        <package.root>/etc/designs/sass-demo</package.root>
+        <!-- defined in deployment.properties -->
     </properties>
 
+
     <build>
+
         <pluginManagement>
             <plugins>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>properties-maven-plugin</artifactId>
+                    <version>1.0.0</version>
+
+                    <executions>
+                        <execution>
+                            <phase>initialize</phase>
+                            <goals>
+                                <goal>read-project-properties</goal>
+                            </goals>
+                            <configuration>
+                                <files>
+                                    <file>${project.basedir}/../deployment.properties</file>
+                                </files>
+                            </configuration>
+                        </execution>
+                    </executions>
+
+                </plugin>
 
                 <plugin>
                     <groupId>com.day.jcr.vault</groupId>
@@ -38,9 +58,9 @@
                     <extensions>true</extensions>
                     <inherited>true</inherited>
                     <configuration>
-                        <userId>${cq.user}</userId>
-                        <password>${cq.password}</password>
-                        <targetURL>${cq.server}/crx/packmgr/service.jsp</targetURL>
+                        <userId>${aem.user}</userId>
+                        <password>${aem.password}</password>
+                        <targetURL>${aem.server}/crx/packmgr/service.jsp</targetURL>
                         <useProxy>false</useProxy>
                         <failOnError>true</failOnError>
                         <builtContentDirectory>target/package/jcr_root</builtContentDirectory>
@@ -50,7 +70,6 @@
                         <properties>
                             <description>${project.description} - ${build.details}</description>
                         </properties>
-                        <embeddedTarget>${package.root}/install</embeddedTarget>
                         <embeddeds>
                             <embedded>
                                 <!-- embed everything which has the same group id as this project
@@ -66,14 +85,6 @@
                                 <goal>package</goal>
                             </goals>
                         </execution>
-
-                        <execution>
-                            <id>install-package</id>
-                            <goals>
-                                <goal>install</goal>
-                            </goals>
-                        </execution>
-
                     </executions>
                 </plugin>
             </plugins>
@@ -99,11 +110,16 @@
                 <directory>src/main/resources</directory>
             </resource>
         </resources>
+
+
     </build>
 
     <profiles>
         <profile>
             <id>server-package-deploy</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
             <build>
                 <pluginManagement>
                     <plugins>
