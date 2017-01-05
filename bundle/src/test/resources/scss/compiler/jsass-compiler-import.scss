@@ -1,0 +1,14 @@
+#test {
+    .test2 {
+        background: red;
+        $var: 1;
+        span:nth-child(#{$var}) {
+            // whatever styles
+            color: blue;
+        }
+    }
+}
+
+#{$company} {
+    background: purple;
+}

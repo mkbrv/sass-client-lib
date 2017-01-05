@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>sass-clientlib</artifactId>
+        <groupId>com.mkbrv.sass.clientlib</groupId>
+        <version>6.1.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>sass-clientlib-bundle</artifactId>
+    <packaging>bundle</packaging>
+
+    <properties>
+        <aem.host>localhost</aem.host>
+        <aem.port>4800</aem.port>
+    </properties>
+
+    <dependencies>
+
+        <!-- Internal dependencies -->
+        <dependency>
+            <groupId>com.mkbrv.sass.clientlib</groupId>
+            <artifactId>sass-clientlib-api</artifactId>
+        </dependency>
+
+        <!-- the only external dependency -->
+        <dependency>
+            <groupId>io.bit3</groupId>
+            <artifactId>jsass</artifactId>
+        </dependency>
+
+        <!-- AEM provided dependencies-->
+        <dependency>
+            <groupId>com.adobe.aem</groupId>
+            <artifactId>uber-jar</artifactId>
+            <classifier>apis</classifier>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <artifactId>slf4j-api</artifactId>
+            <groupId>org.slf4j</groupId>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.osgi</groupId>
+            <artifactId>org.osgi.compendium</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <artifactId>commons-lang3</artifactId>
+            <groupId>org.apache.commons</groupId>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.felix</groupId>
+            <artifactId>org.apache.felix.scr.annotations</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <!-- END of  AEM provided dependencies-->
+
+
+        <!-- Test dependencies -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>2.5.0</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>io.wcm</groupId>
+            <artifactId>io.wcm.testing.aem-mock</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.sling</groupId>
+            <artifactId>org.apache.sling.testing.sling-mock-oak</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.sling</groupId>
+            <artifactId>org.apache.sling.testing.jcr-mock</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.felix</groupId>
+                <artifactId>maven-scr-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>generate-scr-scrdescriptor</id>
+                        <goals>
+                            <goal>scr</goal>
+                        </goals>
+                        <configuration>
+                            <strictMode>true</strictMode>
+                            <properties>
+                                <service.vendor>Netcentric</service.vendor>
+                            </properties>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.felix</groupId>
+                <artifactId>maven-bundle-plugin</artifactId>
+                <extensions>true</extensions>
+                <configuration>
+                    <instructions>
+                        <Embed-Dependency>
+                            sass-clientlib-api,
+                            sass-clientlib-compiler,
+                            jsass
+                        </Embed-Dependency>
+                        <Export-Package>
+                            com.mkbrv.sass.clientlib.api,
+                            com.mkbrv.sass.clientlib.bundle
+                        </Export-Package>
+                    </instructions>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <profiles>
+        <!-- Development profile: install only the bundle -->
+        <profile>
+            <id>autoInstallBundle</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.sling</groupId>
+                        <artifactId>maven-sling-plugin</artifactId>
+                        <version>2.1.0</version>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>install</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <slingUrl>http://${aem.host}:${aem.port}/system/console/bundles</slingUrl>
+                            <slingUrlSuffix>/apps/mkbrv/install/</slingUrlSuffix>
+                            <failOnError>true</failOnError>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+
+
+</project>

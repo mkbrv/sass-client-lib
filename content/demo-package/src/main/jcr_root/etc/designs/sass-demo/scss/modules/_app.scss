@@ -1,0 +1,28 @@
+@function responsive-function($obj, $overall: $total-width) {
+  @return $obj / $overall;
+}
+
+
+body {
+  margin: 0 auto;
+  max-width: $total-width;
+}
+
+
+// For block for looking over numbered items. Works great for Views styling (if you're not using Display Suite) or custom blocks
+
+$block-slug: block !default;
+$block-header: "Hello World" "SASS Rocks" "SASSy Is The Way to Be";
+
+@for $i from 1 through 3 {
+  .#{$block-slug}-#{$i} {
+    
+    padding: 10px 20px 10px 20px;
+    margin: 0px 10px 10px 10px;
+    border: 1px solid $mdblue;
+    
+    &:before {
+      @include block-header(nth($block-header, $i));
+    }
+  }
+}

@@ -1,0 +1,14 @@
+#test-second {
+    .test2-second {
+        background: red;
+        $var: 1;
+        span:nth-child(#{$var}) {
+            // whatever styles
+            color: blue;
+        }
+    }
+}
+
+#{$company}imported {
+    background: purple;
+}

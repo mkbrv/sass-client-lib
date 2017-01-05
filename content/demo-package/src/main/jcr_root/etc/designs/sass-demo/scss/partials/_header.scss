@@ -1,0 +1,12 @@
+.header {
+
+}
+.logo {
+  background-color: #512da8;
+  margin:-100px 0 0 -84px;
+  padding: 1em 2em;
+  @include position(absolute, 50% 0 0 50%);
+  img {
+
+  }
+}

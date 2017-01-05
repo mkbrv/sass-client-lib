@@ -1,0 +1,15 @@
+.sidebar {
+
+}
+
+
+.golden-left {
+  float: left;
+  padding-top: 10px;
+  @include golden-mixin;
+}
+.golden-right {
+  padding-top: 10px;
+  float: right;
+  @include golden-mixin("small");
+}

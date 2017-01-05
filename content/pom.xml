@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>sass-clientlib</artifactId>
+        <groupId>com.mkbrv.sass.clientlib</groupId>
+        <version>6.1.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>sass-clientlib-content</artifactId>
+    <packaging>pom</packaging>
+    <name>
+        SASS :: Client :: Lib :: Content
+    </name>
+    <modules>
+        <module>demo-package</module>
+        <module>package</module>
+    </modules>
+
+    <properties>
+        <cq.user>admin</cq.user>
+        <cq.password>admin</cq.password>
+        <cq.server>http://localhost:4800</cq.server>
+        <package.root>/etc/designs/sass-demo</package.root>
+    </properties>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+
+                <plugin>
+                    <groupId>com.day.jcr.vault</groupId>
+                    <artifactId>content-package-maven-plugin</artifactId>
+                    <version>0.5.1</version>
+
+                    <extensions>true</extensions>
+                    <inherited>true</inherited>
+                    <configuration>
+                        <userId>${cq.user}</userId>
+                        <password>${cq.password}</password>
+                        <targetURL>${cq.server}/crx/packmgr/service.jsp</targetURL>
+                        <useProxy>false</useProxy>
+                        <failOnError>true</failOnError>
+                        <builtContentDirectory>target/package/jcr_root</builtContentDirectory>
+                        <group>${project.groupId}}</group>
+                        <name>${project.artifactId}</name>
+                        <!-- enrich description with build informations -->
+                        <properties>
+                            <description>${project.description} - ${build.details}</description>
+                        </properties>
+                        <embeddedTarget>${package.root}/install</embeddedTarget>
+                        <embeddeds>
+                            <embedded>
+                                <!-- embed everything which has the same group id as this project
+                                    itself, nevertheless it only filters from the list of given dependencies. -->
+                                <groupId>${project.groupId}</groupId>
+                            </embedded>
+                        </embeddeds>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <id>default-package</id>
+                            <goals>
+                                <goal>package</goal>
+                            </goals>
+                        </execution>
+
+                        <execution>
+                            <id>install-package</id>
+                            <goals>
+                                <goal>install</goal>
+                            </goals>
+                        </execution>
+
+                    </executions>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+
+
+        <resources>
+            <!-- copy everything what should be contained in the package to target/package -->
+            <resource>
+                <directory>src/main/jcr_root</directory>
+                <targetPath>${project.build.directory}/package/jcr_root</targetPath>
+                <excludes>
+                    <exclude>**/*.vlt</exclude>
+                    <exclude>**/*.svn</exclude>
+                    <exclude>**/*.gitignore</exclude>
+                    <exclude>**/*.DS_Store</exclude>
+                    <exclude>WEB-INF/**</exclude>
+                    <exclude>META-INF/**</exclude>
+                </excludes>
+            </resource>
+
+            <resource>
+                <directory>src/main/resources</directory>
+            </resource>
+        </resources>
+    </build>
+
+    <profiles>
+        <profile>
+            <id>server-package-deploy</id>
+            <build>
+                <pluginManagement>
+                    <plugins>
+                        <plugin>
+                            <groupId>com.day.jcr.vault</groupId>
+                            <artifactId>content-package-maven-plugin</artifactId>
+                            <executions>
+                                <execution>
+                                    <id>install-package</id>
+                                    <goals>
+                                        <goal>install</goal>
+                                    </goals>
+                                </execution>
+                            </executions>
+                        </plugin>
+                    </plugins>
+                </pluginManagement>
+            </build>
+        </profile>
+    </profiles>
+
+
+</project>

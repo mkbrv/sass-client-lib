@@ -1,0 +1,21 @@
+// A Mixin to deal with titles
+@mixin block-header($title: "Title Placeholder") {
+  content: $title;
+  text-transform: uppercase; 
+  background: #fff;
+  position: absolute;
+  color: $mdblue;
+  font-size: 13px;
+  margin: -17px 0 0 -5px;
+  padding: 0 5px 0 5px;
+}
+
+// Mixin for Golden Ratio Percentage
+@mixin golden-mixin($size: "large") {
+  @if $size == "large" {
+   width: 61.8%;
+  }
+  @if $size == "small" {
+    width: 38.2%;
+  }
+}

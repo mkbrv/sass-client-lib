@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.mkbrv.sass.clientlib</groupId>
+    <artifactId>sass-clientlib</artifactId>
+    <packaging>pom</packaging>
+    <!-- AEM Version - same version with AEM compatibility -->
+    <version>6.1.0-SNAPSHOT</version>
+
+    <modules>
+        <module>bundle</module>
+        <module>api</module>
+        <module>content</module>
+    </modules>
+
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <junit.jupiter.version>5.0.0-M3</junit.jupiter.version>
+        <junit.platform.version>1.0.0-M3</junit.platform.version>
+        <io.wcm.aem.mock.version>1.7.0</io.wcm.aem.mock.version>
+        <apache.sling.mock.oak.version>1.0.0</apache.sling.mock.oak.version>
+        <apache.sling.jcr.mock.version>1.1.12</apache.sling.jcr.mock.version>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+
+            <dependency>
+                <groupId>com.mkbrv.sass.clientlib</groupId>
+                <artifactId>sass-clientlib-api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+
+            <!-- Transitive dependency needed to compile sass -->
+            <dependency>
+                <groupId>io.bit3</groupId>
+                <artifactId>jsass</artifactId>
+                <version>5.3.0</version>
+                <exclusions>
+                    <!-- Already provided in AEM -->
+                    <exclusion>
+                        <groupId>commons-io</groupId>
+                        <artifactId>commons-io</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <artifactId>commons-lang3</artifactId>
+                        <groupId>org.apache.commons</groupId>
+                    </exclusion>
+                    <exclusion>
+                        <artifactId>slf4j-api</artifactId>
+                        <groupId>org.slf4j</groupId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+
+            <!-- Provided by AEM -->
+            <dependency>
+                <groupId>com.adobe.aem</groupId>
+                <artifactId>uber-jar</artifactId>
+                <version>6.2.0</version>
+                <classifier>apis</classifier>
+                <scope>provided</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>commons-io</groupId>
+                <artifactId>commons-io</artifactId>
+                <version>2.4</version>
+                <scope>provided</scope>
+            </dependency>
+
+            <dependency>
+                <artifactId>commons-lang3</artifactId>
+                <groupId>org.apache.commons</groupId>
+                <version>3.0.1</version>
+                <scope>provided</scope>
+            </dependency>
+
+            <dependency>
+                <artifactId>slf4j-api</artifactId>
+                <groupId>org.slf4j</groupId>
+                <version>1.7.6</version>
+                <scope>provided</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.osgi</groupId>
+                <artifactId>org.osgi.compendium</artifactId>
+                <version>5.0.0</version>
+                <scope>provided</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.osgi</groupId>
+                <artifactId>org.osgi.core</artifactId>
+                <version>5.0.0</version>
+                <scope>provided</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.felix</groupId>
+                <artifactId>org.apache.felix.scr.annotations</artifactId>
+                <version>1.11.0</version>
+                <scope>provided</scope>
+            </dependency>
+
+            <!-- Test dependencies -->
+            <dependency>
+                <groupId>org.junit.jupiter</groupId>
+                <artifactId>junit-jupiter-api</artifactId>
+                <version>${junit.jupiter.version}</version>
+                <scope>test</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>io.wcm</groupId>
+                <artifactId>io.wcm.testing.aem-mock</artifactId>
+                <version>${io.wcm.aem.mock.version}</version>
+                <scope>test</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.sling</groupId>
+                <artifactId>org.apache.sling.testing.sling-mock-oak</artifactId>
+                <version>${apache.sling.mock.oak.version}</version>
+                <scope>test</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.sling</groupId>
+                <artifactId>org.apache.sling.testing.jcr-mock</artifactId>
+                <version>${apache.sling.jcr.mock.version}</version>
+                <scope>test</scope>
+            </dependency>
+
+        </dependencies>
+    </dependencyManagement>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.felix</groupId>
+                    <artifactId>maven-scr-plugin</artifactId>
+                    <version>1.23.0</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.felix</groupId>
+                    <artifactId>maven-bundle-plugin</artifactId>
+                    <extensions>true</extensions>
+                    <version>3.0.1</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+
+        <plugins>
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.1</version>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.19.1</version>
+                <configuration>
+                    <includes>
+                        <include>**/Test*.java</include>
+                        <include>**/*Test.java</include>
+                        <include>**/*Tests.java</include>
+                        <include>**/*TestCase.java</include>
+                    </includes>
+                </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.junit.platform</groupId>
+                        <artifactId>junit-platform-surefire-provider</artifactId>
+                        <version>${junit.platform.version}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.junit.jupiter</groupId>
+                        <artifactId>junit-jupiter-engine</artifactId>
+                        <version>${junit.jupiter.version}</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+        </plugins>
+
+    </build>
+
+    <repositories>
+        <repository>
+            <id>adobe</id>
+            <url>https://repo.adobe.com/nexus/content/repositories/public</url>
+        </repository>
+    </repositories>
+
+</project>

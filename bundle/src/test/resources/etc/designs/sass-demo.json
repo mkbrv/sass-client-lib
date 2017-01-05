@@ -1,0 +1,20 @@
+{
+  "jcr:primaryType": "cq:ClientLibraryFolder",
+  "jcr:mixinTypes": [
+    "rep:AccessControllable"
+  ],
+  "jcr:createdBy": "admin",
+  "jcr:created": "Sat Dec 31 2016 00:44:45 GMT+0100",
+  "sling:resourceType": "widgets/clientlib",
+  "categories": "cq.sass.demo",
+  "css.txt": {
+    "jcr:primaryType": "nt:file",
+    "jcr:createdBy": "admin",
+    "jcr:created": "Sat Dec 31 2016 00:44:45 GMT+0100"
+  },
+  "scss": {
+    "jcr:primaryType": "nt:folder",
+    "jcr:createdBy": "admin",
+    "jcr:created": "Sat Dec 31 2016 00:53:20 GMT+0100"
+  }
+}

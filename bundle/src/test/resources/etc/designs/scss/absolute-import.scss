@@ -1,0 +1,10 @@
+@import "mixins/clearfix";
+//duplicated on purpose
+
+#imported {
+    .first {
+        h1 {
+            color: red;
+        }
+    }
+}

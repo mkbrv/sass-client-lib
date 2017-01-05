@@ -1,0 +1,9 @@
+@import "mixins/clearfix";
+
+#imported {
+    .second {
+        h1 {
+            color: red;
+        }
+    }
+}
