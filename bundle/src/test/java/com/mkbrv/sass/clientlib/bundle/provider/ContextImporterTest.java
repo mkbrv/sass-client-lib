@@ -3,11 +3,9 @@ package com.mkbrv.sass.clientlib.bundle.provider;
 import com.adobe.granite.ui.clientlibs.script.CompilerContext;
 import com.adobe.granite.ui.clientlibs.script.ScriptResource;
 import com.adobe.granite.ui.clientlibs.script.ScriptResourceProvider;
-import com.mkbrv.sass.clientlib.bundle.JcrIntegrationTest;
-import io.bit3.jsass.importer.Import;
+import io.bit3.jsass.importer.Importer;
 import org.apache.sling.api.resource.Resource;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
@@ -16,16 +14,14 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.URISyntaxException;
-import java.util.Collection;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
 /**
+ * Tests are in the parent class;
  * Created by mkbrv on 02/01/2017.
  */
-public class ContextImporterTest extends JcrIntegrationTest {
+public class ContextImporterTest extends AbstractImporterTests {
 
     @Mock
     CompilerContext context;
@@ -55,14 +51,8 @@ public class ContextImporterTest extends JcrIntegrationTest {
         }).when(resourceProvider).getResource(Mockito.anyString());
     }
 
-    @Test
-    public void canImportAbsolutePath() throws URISyntaxException {
-        ContextImporter importer = new ContextImporter(context);
-        Collection<Import> imported =
-                importer.apply("/etc/designs/sass-demo/scss/imported",
-                        new Import("/etc/designs/sass-demo/scss/sample",
-                                "/etc/designs/sass-demo/scss/sample"));
-
-        assertTrue(imported.size() > 0);
+    @Override
+    Importer getImporter() {
+        return new ContextImporter(context);
     }
 }

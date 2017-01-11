@@ -10,11 +10,15 @@ import org.junit.jupiter.api.BeforeAll;
 public class JcrIntegrationTest {
 
 
-    public static SlingContext slingContext = new SlingContext(ResourceResolverType.JCR_MOCK);
+    public static SlingContext slingContext;
 
 
     @BeforeAll
     public static void setUp() {
+        if (slingContext != null) {
+            return;
+        }
+        slingContext = new SlingContext(ResourceResolverType.JCR_MOCK);
         slingContext.setUp();
 
         slingContext.load().json(JcrIntegrationTest.class.getClassLoader().getResourceAsStream("etc/designs/sass-demo.json"),
